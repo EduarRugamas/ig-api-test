@@ -48,7 +48,10 @@ app.get('/instagram/callback', async(req, res) => {
         if (err) return res.send(err);
         res.cookie('igToken', result.access_token);
         console.log(result.access_token);
-        res.redirect('/instagram/photos')
+        instagram.get('users/self', (err, result) => {
+            console.log(result);
+        });
+        res.redirect('/instagram/photos');
     });
 
 });
@@ -60,7 +63,7 @@ app.get('/instagram/photos', (req, res) => {
         const accessToken = req.cookies.igToken;
         console.log(`token: ${accessToken}`);
 
-        const userId = accessToken.split('.')[0] // ig user id, like: 1633560409
+        const userId = accessToken.split('.')[0]
         console.log(userId);
         ig.user_media_recent(userId, (err, result, pagination, remaining, limit) => {
             if (err.code) return res.render('error');
