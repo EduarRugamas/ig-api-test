@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const Instagram = require('node-instagram').default;
+const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
