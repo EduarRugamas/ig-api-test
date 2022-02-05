@@ -6,7 +6,6 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
 
-
 //config 
 const port = process.env.PORT || 3001;
 const app = express();
@@ -46,9 +45,11 @@ app.get('/instagram/callback', async(req, res) => {
 
     const data = await instagram.authorizeUser(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
         if (err) return res.send(err);
+        //guardando token en una cookie del navegador
         res.cookie('igToken', result.access_token);
-        console.log(result.access_token);
-
+        //imprimo la cookie para saber el valor 
+        console.log(` token guardado ${result.access_token}`);
+        //redirecciono a una ruta para mostrar las fotos del usuario logeado 
         res.redirect('/instagram/photos');
     });
 
@@ -60,15 +61,15 @@ app.get('/instagram/callback', async(req, res) => {
 app.get('/instagram/photos', (req, res) => {
     try {
         const accessToken = req.cookies.igToken;
-        console.log(`token: ${accessToken}`);
+        console.log(`token: ${ accessToken }`);
 
-        instagram.get('users/self', { access_token: accessToken }, (err, result) => {
-            if (err) return console.log(`hay un error ${err}`);
-            console.log(`informacion: ${result}`);
-        });
+        // instagram.get('users/self', { access_token: accessToken }, (err, result) => {
+        //     if (err) return console.log(`hay un error $ { err }`);
+        //     console.log(`informacion: $ { result }`);
+        // });
 
         const userId = accessToken.split('.')[0]
-        console.log(userId);
+        console.log(`userId: ${userId}`);
         ig.user_media_recent(userId, (err, result, pagination, remaining, limit) => {
             if (err.code) return res.render('error');
             res.render('photos', { photos: result });
@@ -81,9 +82,6 @@ app.get('/instagram/photos', (req, res) => {
 
 
 
-
-
-
 app.listen(port, () => {
-    console.log(`Server on port in ${port}`);
+    console.log(`Server on port in ${ port }`);
 });
