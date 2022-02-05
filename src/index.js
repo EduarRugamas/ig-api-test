@@ -49,16 +49,15 @@ app.get('/instagram/authorize', (req, res) => {
 //ruta de callback of instagram 
 app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
-
     try {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         console.log('token: ' + data.access_token);
         //token a guardar en localstorage
         localStorage.setItem('token_ig', data.access_token);
-        console.log('informacion: ' + JSON.stringify(data));
-        res.json(data);
-        // res.redirect('/instagram/profile');
+        console.log(data);
+        // res.json(data);
+        res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e)
     }
@@ -69,10 +68,10 @@ app.get('/instagram/callback', async(req, res) => {
 //ruta de profile
 app.get('/instagram/profile', async(req, res) => {
 
-    const token = localStorage.getItem('ig_token');
+    const token = localStorage.getItem('token_ig');
     console.log(`existe token ${token}`);
     const user = await instagram.get('users/self', {
-        accessToken: token.split(".")[0]
+        accessToken: token
     });
     res.json(user);
 });
