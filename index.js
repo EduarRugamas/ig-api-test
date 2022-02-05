@@ -79,7 +79,7 @@ app.get('/instagram/photos', (req, res) => {
         const userId = accessToken.split('.')[0]
         console.log(`userId: ${userId}`);
         instagram.get('users/self/media/recent', { access_token: userId }, (err, data) => {
-            if (err) return console.log(`aqui esta el error de el token: ${err}`);
+            if (err) return console.log('aqui esta el error de el token:' + err);
             console.log(data);
 
         });
@@ -93,6 +93,6 @@ app.get('/instagram/photos', (req, res) => {
 
 app.listen(port, () => {
     console.log(`
-                                        Server on port in $ { port }
+                                        Server on port in ${ port }
                                         `);
 });
