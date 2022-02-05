@@ -43,6 +43,14 @@ app.get('/instagram/authorize', (req, res) => {
 app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
 
+
+    try {
+
+    } catch (e) {
+
+    }
+
+
     const data = await instagram.authorizeUser(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
         if (err) return res.send(err);
         //guardando token en una cookie del navegador
@@ -71,7 +79,7 @@ app.get('/instagram/photos', (req, res) => {
         const userId = accessToken.split('.')[0]
         console.log(`userId: ${userId}`);
         instagram.get('users/self/media/recent', { access_token: userId }, (err, data) => {
-            if (err) return console.log(err);
+            if (err) return console.log(`aqui esta el error de el token: ${err}`);
             console.log(data);
 
         });
@@ -84,5 +92,7 @@ app.get('/instagram/photos', (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Server on port in ${ port }`);
+    console.log(`
+                                        Server on port in $ { port }
+                                        `);
 });
