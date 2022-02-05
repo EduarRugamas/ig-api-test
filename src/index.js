@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
 const { json } = require('express/lib/response');
+const { parse } = require('path');
 
 
 //config 
@@ -55,7 +56,7 @@ app.get('/instagram/callback', async(req, res) => {
         console.log('token: ' + data.access_token);
         //token a guardar en localstorage
         // localStorage.setItem('token_ig', data.access_token);
-        console.log('informacion: ' + data);
+        console.log('informacion: ' + parse.json(data));
         const user = instagram.get('users/' + data.user_id, {
             accessToken: accessToken
         }, (err, result) => {
