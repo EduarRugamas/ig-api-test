@@ -45,21 +45,24 @@ app.get('/instagram/callback', async(req, res) => {
 
 
     try {
-
+        const code = req.query.code;
+        const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
+        console.log('token: ' + data.access_token);
+        res.json(data);
     } catch (e) {
-
+        res.json(e)
     }
 
 
-    const data = await instagram.authorizeUser(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
-        if (err) return res.send(err);
-        //guardando token en una cookie del navegador
-        res.cookie('igToken', result.access_token);
-        //imprimo la cookie para saber el valor 
-        console.log(` token guardado ${result.access_token}`);
-        //redirecciono a una ruta para mostrar las fotos del usuario logeado 
-        res.redirect('/instagram/photos');
-    });
+    // const data = await instagram.authorizeUser(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
+    //     if (err) return res.send(err);
+    //     //guardando token en una cookie del navegador
+    //     res.cookie('igToken', result.access_token);
+    //     //imprimo la cookie para saber el valor 
+    //     console.log(` token guardado ${result.access_token}`);
+    //     //redirecciono a una ruta para mostrar las fotos del usuario logeado 
+    //     res.redirect('/instagram/photos');
+    // });
 
 });
 
