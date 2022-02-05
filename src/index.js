@@ -56,8 +56,8 @@ app.get('/instagram/callback', async(req, res) => {
         //token a guardar en localstorage
         // localStorage.setItem('token_ig', data.access_token);
         console.log('informacion: ' + data)
-            // res.json(data);
-        res.redirect('/instagram/profile');
+        res.json(data);
+        // res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e)
     }
