@@ -56,7 +56,7 @@ app.get('/instagram/callback', async(req, res) => {
         console.log('token: ' + data.access_token);
         //token a guardar en localstorage
         // localStorage.setItem('token_ig', data.access_token);
-        console.log('informacion: ' + parse.json(data));
+        console.log('informacion: ' + JSON.parse(data));
         const user = instagram.get('users/' + data.user_id, {
             accessToken: accessToken
         }, (err, result) => {
