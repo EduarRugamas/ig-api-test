@@ -71,7 +71,9 @@ app.get('/instagram/photos', (req, res) => {
         const userId = accessToken.split('.')[0]
         console.log(`userId: ${userId}`);
         instagram.get('users/self/media/recent', { access_token: userId }, (err, data) => {
+            if (err) return console.log(err);
             console.log(data);
+
         });
     } catch (e) {
         res.render('error');
