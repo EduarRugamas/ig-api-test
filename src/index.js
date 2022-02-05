@@ -40,7 +40,7 @@ app.get('/login', (req, res) => {
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
         instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: ['user_profile', 'instagram_basic', 'user_photos'],
+            scope: ['user_profile', 'user_media', 'user_photos', 'instagram_basic', 'instagram_graph_user_profile', 'instagram_graph_user_media'],
             state: "1"
         })
     );
@@ -54,9 +54,7 @@ app.get('/instagram/callback', async(req, res) => {
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         // console.log('token:' + data.access_token);
         const token = data.access_token;
-        console.log('token unique:' + token);
-        const token_separado = token.split(".")[0];
-        console.log('token separado: ' + token_separado);
+        console.log('token:' + token);
         res.json(data);
     } catch (e) {
         res.json(e)
