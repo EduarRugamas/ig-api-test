@@ -39,7 +39,7 @@ app.get('/login', (req, res) => {
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
         instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: ['instagram_basic', 'user_profile'],
+            scope: ['user_profile', 'instagram_basic', 'user_photos'],
             state: "1"
         })
     );
@@ -56,8 +56,8 @@ app.get('/instagram/callback', async(req, res) => {
         //token a guardar en localstorage
         // localStorage.setItem('token_ig', data.access_token);
         console.log('informacion: ' + data)
-        res.json(data);
-        // res.redirect('/instagram/profile');
+            // res.json(data);
+        res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e)
     }
