@@ -55,6 +55,8 @@ app.get('/instagram/callback', async(req, res) => {
         // console.log('token:' + data.access_token);
         const token = data.access_token;
         console.log('token unique:' + token);
+        const token_separado = token.split(".")[0];
+        console.log('token separado: ' + token_separado);
         res.json(data);
     } catch (e) {
         res.json(e)
