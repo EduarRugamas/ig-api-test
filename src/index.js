@@ -52,8 +52,7 @@ app.get('/instagram/callback', async(req, res) => {
     try {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
-        const token_sin_separar = data.access_token;
-        console.log(token_sin_separar);
+        console.log('token:' + data.access_token);
         res.json(data);
     } catch (e) {
         res.json(e)
