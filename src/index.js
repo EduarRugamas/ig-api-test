@@ -55,16 +55,10 @@ app.get('/instagram/callback', async(req, res) => {
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         console.log('token: ' + data.access_token);
         //token a guardar en localstorage
-        // localStorage.setItem('token_ig', data.access_token);
+        localStorage.setItem('token_ig', data.access_token);
         console.log('informacion: ' + JSON.stringify(data));
-        const user = await instagram.get('users/self', {
-            accessToken: data.access_token
-        }, (err, result) => {
-            if (err) return console.log('error aqui'), console.log(err);
-            console.log(result);
-        });
-        res.json(user);
-        // res.redirect('/instagram/profile');
+        // res.json(user);
+        res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e)
     }
@@ -73,14 +67,14 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de profile
-app.get('/instagram/profile', (req, res) => {
+app.get('/instagram/profile', async(req, res) => {
 
-    // const token = localStorage.getItem('token_ig');
-    instagram.get('users/self', (err, data) => {
-        if (err) return res.render('error');
-        console.log(data);
-        res.json(data);
+    const token = localStorage.getItem('ig_token');
+    console.log(`existe token ${token}`);
+    const user = await instagram.get('users/self', {
+        accessToken: token
     });
+    res.json(user);
 });
 
 app.get('/instagram/logout', () => {});
