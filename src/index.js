@@ -72,7 +72,7 @@ app.get('/instagram/profile', async(req, res) => {
     const token = localStorage.getItem('ig_token');
     console.log(`existe token ${token}`);
     const user = await instagram.get('users/self', {
-        accessToken: token
+        accessToken: token.split(".")[0]
     });
     res.json(user);
 });
