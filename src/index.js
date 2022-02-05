@@ -45,7 +45,6 @@ app.get('/instagram/authorize', (req, res) => {
 app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
 
-
     try {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
@@ -77,12 +76,10 @@ app.get('/instagram/callback', async(req, res) => {
 app.get('/instagram/profile', (req, res) => {
 
     const token = localStorage.getItem('token_ig');
-    instagram.get('users/self', { access_token: token }, (err, data) => {
+    instagram.get('users/self', (err, data) => {
         if (err) return res.render('error');
         console.log(data);
-        res.render('profile', {
-            datos: data
-        });
+        res.json(data);
     });
 
 
