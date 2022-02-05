@@ -54,16 +54,18 @@ app.get('/instagram/callback', async(req, res) => {
 
 });
 
-instagram.get('users/self', (err, result) => {
-    if (err) return console.log(`hay un error ${err}`);
-    console.log(`informacion: ${result}`);
-});
+
 
 //ruta de photos
 app.get('/instagram/photos', (req, res) => {
     try {
         const accessToken = req.cookies.igToken;
         console.log(`token: ${accessToken}`);
+
+        instagram.get('users/self', { access_token: accessToken }, (err, result) => {
+            if (err) return console.log(`hay un error ${err}`);
+            console.log(`informacion: ${result}`);
+        });
 
         const userId = accessToken.split('.')[0]
         console.log(userId);
