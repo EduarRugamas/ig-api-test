@@ -4,6 +4,7 @@ const Instagram = require('node-instagram').default;
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const engine = require('ejs-mate');
 
 
 //config 
@@ -11,9 +12,10 @@ const port = process.env.PORT || 3001;
 const app = express();
 app.use(morgan('dev'));
 
-//config pug and cookieParser
-app.set('view engine', 'pug');
-app.use(express.static(path.join(__dirname, 'public')));
+//config ejs and cookieParser
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
 app.use(cookieParser());
 
 //config instagram credentials
@@ -24,12 +26,12 @@ const instagram = new Instagram({
 
 //ruta raiz
 app.get('/', (req, res) => {
-    res.render('index', { message: 'Welcome to Login with Instagram' });
+    res.render('index');
 });
 
 //ruta login
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.redirect('/instagram/authorize');
 });
 
 //ruta Oauth instagram 
