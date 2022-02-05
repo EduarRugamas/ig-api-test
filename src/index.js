@@ -39,7 +39,7 @@ app.get('/login', (req, res) => {
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
         instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: ['instagram_basic', 'email'],
+            scope: ['instagram_basic', 'user_profile'],
             state: "1"
         })
     );
