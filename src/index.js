@@ -37,7 +37,7 @@ app.get('/login', (req, res) => {
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
-        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, { scope: ['email', 'instagram_basic', 'user_profile', 'user_photos', 'user_likes'], state: "1" })
+        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, { scope: ['email', 'instagram_basic', 'public_profile', 'user_profile', 'user_photos', 'user_likes'], state: "1" })
     );
 });
 
