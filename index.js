@@ -48,7 +48,10 @@ app.get('/instagram/callback', async(req, res) => {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         console.log('token: ' + data.access_token);
-        res.json(data);
+        //token a guardar en localstorage
+        localStorage.setItem('token_ig', data.access_token);
+        // res.json(data);
+        res.redirect('/instagram/profile')
     } catch (e) {
         res.json(e)
     }
@@ -69,26 +72,18 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de photos
-app.get('/instagram/photos', (req, res) => {
-    try {
-        const accessToken = req.cookies.igToken;
-        console.log(`token: ${ accessToken }`);
+app.get('/instagram/profile', (req, res) => {
 
-        // instagram.get('users/self', { access_token: accessToken }, (err, result) => {
-        //     if (err) return console.log(`hay un error $ { err }`);
-        //     console.log(`informacion: $ { result }`);
-        // });
-
-        const userId = accessToken.split('.')[0]
-        console.log(`userId: ${userId}`);
-        instagram.get('users/self/media/recent', { access_token: userId }, (err, data) => {
-            if (err) return console.log('aqui esta el error de el token:' + err);
-            console.log(data);
-
+    const token = localStorage.getItem('token_ig');
+    instagram.get('users/self', { access_token: token }, (err, data) => {
+        if (err) return res.render('error');
+        console.log(data);
+        res.render('profile', {
+            datos: data
         });
-    } catch (e) {
-        res.render('error');
-    }
+    });
+
+
 });
 
 
