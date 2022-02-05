@@ -70,10 +70,9 @@ app.get('/instagram/photos', (req, res) => {
 
         const userId = accessToken.split('.')[0]
         console.log(`userId: ${userId}`);
-        ig.user_media_recent(userId, (err, result, pagination, remaining, limit) => {
-            if (err.code) return res.render('error');
-            res.render('photos', { photos: result });
-        })
+        instagram.get('users/self/media/recent', { access_token: userId }).then(data => {
+            console.log(data);
+        });
     } catch (e) {
         res.render('error');
     }
