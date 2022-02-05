@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
+const { json } = require('express/lib/response');
 
 
 //config 
@@ -37,7 +38,10 @@ app.get('/login', (req, res) => {
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
-        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, { scope: ['email', 'instagram_basic', 'public_profile', 'user_profile', 'user_photos', 'user_likes'], state: "1" })
+        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
+            scope: ['instagram_basic'],
+            state: "1"
+        })
     );
 });
 
@@ -57,18 +61,6 @@ app.get('/instagram/callback', async(req, res) => {
     } catch (e) {
         res.json(e)
     }
-
-
-    // const data = await instagram.authorizeUser(req.query.code, process.env.IG_URI_REDIRECT, (err, result) => {
-    //     if (err) return res.send(err);
-    //     //guardando token en una cookie del navegador
-    //     res.cookie('igToken', result.access_token);
-    //     //imprimo la cookie para saber el valor 
-    //     console.log(` token guardado ${result.access_token}`);
-    //     //redirecciono a una ruta para mostrar las fotos del usuario logeado 
-    //     res.redirect('/instagram/photos');
-    // });
-
 });
 
 
@@ -76,7 +68,7 @@ app.get('/instagram/callback', async(req, res) => {
 //ruta de profile
 app.get('/instagram/profile', (req, res) => {
 
-    const token = localStorage.getItem('token_ig');
+    // const token = localStorage.getItem('token_ig');
     instagram.get('users/self', (err, data) => {
         if (err) return res.render('error');
         console.log(data);
