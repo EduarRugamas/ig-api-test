@@ -69,10 +69,10 @@ app.get('/instagram/profile', async(req, res) => {
     instagram.get('users/self', (err, data) => {
         if (err) {
             console.log('error aqui');
-            console.log(err);
+            console.log(JSON.stringify(err));
         } else {
             console.log('informacion obtenida');
-            console.log(data);
+            console.log(JSON.parse(data));
         }
     })
 });
