@@ -6,6 +6,9 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
 const axios = require('axios').default;
+const LocalStorage = require('node-localstorage').LocalStorage;
+
+const localStorage = new LocalStorage('./scratch');
 
 
 
@@ -59,8 +62,12 @@ app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
     const code = req.query.code;
     const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
+
     localStorage.setItem('token', data.access_token);
+    console.log('token: ' + data.access_token);
     localStorage.setItem('user_id', data.user_id);
+    console.log('user_id: ' + data.user_id);
+
     res.render('profile');
 });
 
