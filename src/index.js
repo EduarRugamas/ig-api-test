@@ -58,25 +58,25 @@ app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
 
     const code = req.query.code;
-    // try {
-    //     const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
-    //     // console.log('token:' + data.access_token);
-    //     const token = data.access_token;
-    //     // console.log('token a guardar:' + token);
-    //     localStorage.setItem('token_ig', token);
-    //     res.json(data);
-    //     // res.redirect('/instagram/profile');
-    // } catch (e) {
-    //     res.json(e);
-    // }
+    try {
+        const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
+        // console.log('token:' + data.access_token);
+        // const token = data.access_token;
+        //  console.log('token a guardar:' + token);
+        // localStorage.setItem('token_ig', token);
+        res.json(data);
+        // res.redirect('/instagram/profile');
+    } catch (e) {
+        res.json(e);
+    }
 
-    axios.post(`https://api.instagram.com/oauth/access_token?client_id=${process.env.IG_CLIENT_ID}&client_secret=${process.env.IG_CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${process.env.IG_URI_REDIRECT}&code=${code}`)
-        .then(response => {
-            res.json(response.data);
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    // axios.post(`https://api.instagram.com/oauth/access_token?client_id=${process.env.IG_CLIENT_ID}&client_secret=${process.env.IG_CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${process.env.IG_URI_REDIRECT}&code=${code}`)
+    //     .then(response => {
+    //         res.json(response.data);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     });
 
 });
 
