@@ -5,7 +5,6 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
-const { response } = require('express');
 const axios = require('axios').default;
 
 
@@ -68,8 +67,9 @@ app.get('/instagram/callback', async(req, res) => {
         localStorage.setItem('token_ig', token);
         localStorage.setItem('use_id', id_user);
         // res.json(data);
+        console.log('informacion aqui');
         console.log(data);
-        res.redirect('/instagram/profile');
+        res.render('profile');
     } catch (e) {
         res.json(e);
     }
@@ -87,15 +87,16 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de profile
-app.get('/instagram/profile', async(req, res) => {
+app.get('/instagram/profile', (req, res) => {
 
     const elToken = localStorage.getItem('token_ig');
     const elUserId = localStorage.getItem('use_id');
-    console.log(`token: ${elToken}, [el user id ${elUserId}]`);
+    console.log('token: ' + elToken);
+    console.log('user_id: ' + elUserId);
 
     axios.get(`https://graph.instagram.com/${elUserId}?fields=id,username&access_token=${elToken}`)
-        .then(response => { res.json(response.config.data) })
-        .catch(err => { console.log(err); });
+        .then(response => { console.log(response.data); })
+        .catch(err => { console.log(err.message); });
 
 });
 
