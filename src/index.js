@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
+const axios = require('axios').default;
 
 
 
@@ -37,12 +38,17 @@ app.get('/login', (req, res) => {
 
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
-    res.redirect(
-        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: ['user_profile', 'instagram_graph_user_profile', 'instagram_graph_user_media'],
-            state: "1"
-        })
-    );
+    // res.redirect(
+    //     instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
+    //         scope: ['user_profile', 'instagram_graph_user_profile', 'instagram_graph_user_media'],
+    //         state: "1"
+    //     })
+    // );
+
+    axios.get(`https://api.instagram.com/oauth/authorize?client_id=${process.env.IG_CLIENT_ID}&redirect_uri=${process.env.IG_URI_REDIRECT}&scope=user_profile,instagram_graph_user_profile,instagram_graph_user_media&response_type=code`).then(response => {
+        console.log(response.data);
+    }).catch(err => { console.log(err) });
+
 });
 
 //ruta de callback of instagram 
