@@ -47,7 +47,7 @@ app.get('/instagram/authorize', (req, res) => {
 
     axios.get(`https://api.instagram.com/oauth/authorize?client_id=${process.env.IG_CLIENT_ID}&redirect_uri=${process.env.IG_URI_REDIRECT}&scope=user_profile,instagram_graph_user_profile,instagram_graph_user_media&response_type=code`).then(response => {
         console.log(response.config.transformResponse);
-        res.render(response);
+        res.redirect(process.env.IG_URI_REDIRECT);
     }).catch(err => { console.log(err) });
 
 });
