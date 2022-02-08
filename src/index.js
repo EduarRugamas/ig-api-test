@@ -56,7 +56,8 @@ app.get('/instagram/callback', async(req, res) => {
         // const token = data.access_token;
         // console.log('token a guardar:' + token);
         // localStorage.setItem('token_ig', token);
-        res.json(data);
+        // res.json(data);
+        res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e);
     }
@@ -65,12 +66,9 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de profile
-app.get('/instagram/profile', (req, res) => {
-    const token = localStorage.getItem('token_ig');
-    console.log('token recivido: ' + token);
-
-
-
+app.get('/instagram/profile', async(req, res) => {
+    const user = await instagram.get('users/self');
+    res.json(user);
 });
 
 app.get('/instagram/logout', () => {});
