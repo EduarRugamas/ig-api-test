@@ -19,6 +19,7 @@
         "express": "^4.17.2",
         "morgan": "^1.10.0",
         "node-instagram": "^4.3.0",
+        "node-localstorage": "^2.2.1",
         "pug": "^3.0.2"
     },
     "devDependencies": {
