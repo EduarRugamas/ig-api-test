@@ -40,7 +40,7 @@ app.get('/login', (req, res) => {
 app.get('/instagram/authorize', (req, res) => {
     res.redirect(
         instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: ['user_profile', 'user_media', 'user_photos', 'instagram_basic', 'instagram_graph_user_profile', 'instagram_graph_user_media'],
+            scope: ['user_profile', 'instagram_graph_user_profile', 'instagram_graph_user_media'],
             state: "1"
         })
     );
@@ -53,31 +53,23 @@ app.get('/instagram/callback', async(req, res) => {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         // console.log('token:' + data.access_token);
-        const token = data.access_token;
-        console.log('token a guardar:' + token);
-        localStorage.setItem('token_ig', token);
-        res.redirect('/instagram/profile');
+        // const token = data.access_token;
+        // console.log('token a guardar:' + token);
+        // localStorage.setItem('token_ig', token);
+        res.json(data);
     } catch (e) {
-        res.json(e)
+        res.json(e);
     }
 });
 
 
 
 //ruta de profile
-app.get('/instagram/profile', async(req, res) => {
+app.get('/instagram/profile', (req, res) => {
     const token = localStorage.getItem('token_ig');
     console.log('token recivido: ' + token);
 
-    try {
-        await instagram.get('users/self', { accessToken: token }, (err, result) => {
-            if (err) return console.log(err), res.json(err);
-            console.log(result);
-            res.json(result);
-        })
-    } catch (error) {
-        res.json(error);
-    }
+
 
 });
 
