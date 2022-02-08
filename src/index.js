@@ -45,7 +45,8 @@ app.get('/instagram/authorize', (req, res) => {
         })
     );
 
-    // axios.get(`https://api.instagram.com/oauth/authorize?client_id=${process.env.IG_CLIENT_ID}&redirect_uri=${process.env.IG_URI_REDIRECT}&scope=user_profile,instagram_graph_user_profile,instagram_graph_user_media&response_type=code`).then(response => {
+    // axios.get(`https://api.instagram.com/oauth/authorize?client_id=${process.env.IG_CLIENT_ID}&redirect_uri=${process.env.IG_URI_REDIRECT}&scope=user_profile,instagram_graph_user_profile,instagram_graph_user_media&response_type=code`)
+    // .then(response => {
     //     console.log(response.config.transformResponse);
     //     res.redirect(process.env.IG_URI_REDIRECT);
     // }).catch(err => { console.log(err) });
@@ -55,18 +56,28 @@ app.get('/instagram/authorize', (req, res) => {
 //ruta de callback of instagram 
 app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
-    try {
-        const code = req.query.code;
-        const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
-        // console.log('token:' + data.access_token);
-        const token = data.access_token;
-        // console.log('token a guardar:' + token);
-        localStorage.setItem('token_ig', token);
-        res.json(data);
-        // res.redirect('/instagram/profile');
-    } catch (e) {
-        res.json(e);
-    }
+
+    const code = req.query.code;
+    // try {
+    //     const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
+    //     // console.log('token:' + data.access_token);
+    //     const token = data.access_token;
+    //     // console.log('token a guardar:' + token);
+    //     localStorage.setItem('token_ig', token);
+    //     res.json(data);
+    //     // res.redirect('/instagram/profile');
+    // } catch (e) {
+    //     res.json(e);
+    // }
+
+    axios.post(`https://api.instagram.com/oauth/access_token&client_id=${process.env.IG_CLIENT_ID}&client_secret=${process.env.IG_CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${process.env.IG_URI_REDIRECT}&code=${code}`)
+        .then(response => {
+            res.json(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
 });
 
 
