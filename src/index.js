@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
+const { response } = require('express');
 const axios = require('axios').default;
 
 
@@ -61,11 +62,14 @@ app.get('/instagram/callback', async(req, res) => {
     try {
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         // console.log('token:' + data.access_token);
-        // const token = data.access_token;
+        const token = data.access_token;
+        const id_user = data.user_id;
         //  console.log('token a guardar:' + token);
-        // localStorage.setItem('token_ig', token);
-        res.json(data);
-        // res.redirect('/instagram/profile');
+        localStorage.setItem('token_ig', token);
+        localStorage.setItem('use_id', id_user);
+        // res.json(data);
+        console.log(data);
+        res.redirect('/instagram/profile');
     } catch (e) {
         res.json(e);
     }
@@ -85,17 +89,14 @@ app.get('/instagram/callback', async(req, res) => {
 //ruta de profile
 app.get('/instagram/profile', async(req, res) => {
 
-    const elToken = localStorage.getItem('token_ig')
+    const elToken = localStorage.getItem('token_ig');
+    const elUserId = localStorage.getItem('use_id');
+    console.log(`token: ${elToken}, [el user id ${elUserId}]`);
 
-    instagram.get('users/self', { accessToken: elToken }, (err, data) => {
-        if (err) {
-            console.log('error aqui');
-            console.log(JSON.stringify(err));
-        } else {
-            console.log('informacion obtenida');
-            console.log(JSON.parse(data));
-        }
-    })
+    axios.get(`https://graph.instagram.com/${elUserId}?fields=id,username&access_token=${elToken}`)
+        .then(response => { res.json(response.config.data) })
+        .catch(err => { console.log(err); });
+
 });
 
 app.get('/instagram/logout', () => {});
