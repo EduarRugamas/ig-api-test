@@ -5,8 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
-const { json } = require('express/lib/response');
-const { parse } = require('path');
+
 
 
 //config 
@@ -67,8 +66,15 @@ app.get('/instagram/callback', async(req, res) => {
 
 //ruta de profile
 app.get('/instagram/profile', async(req, res) => {
-    const user = await instagram.get('users/self');
-    res.json(user);
+    instagram.get('users/self', (err, data) => {
+        if (err) {
+            console.log('error aqui');
+            console.log(err);
+        } else {
+            console.log('informacion obtenida');
+            console.log(data);
+        }
+    })
 });
 
 app.get('/instagram/logout', () => {});
