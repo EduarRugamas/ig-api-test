@@ -70,7 +70,7 @@ app.get('/instagram/callback', async(req, res) => {
     //     res.json(e);
     // }
 
-    axios.post(`https://api.instagram.com/oauth/access_token?client_id=${process.env.IG_CLIENT_ID}?client_secret=${process.env.IG_CLIENT_SECRET}?grant_type=authorization_code?redirect_uri=${process.env.IG_URI_REDIRECT}?code=${code}`)
+    axios.post(`https://api.instagram.com/oauth/access_token?client_id=${process.env.IG_CLIENT_ID}&client_secret=${process.env.IG_CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${process.env.IG_URI_REDIRECT}&code=${code}`)
         .then(response => {
             res.json(response.data);
         })
