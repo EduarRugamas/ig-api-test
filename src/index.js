@@ -52,9 +52,9 @@ app.get('/instagram/callback', async(req, res) => {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
         // console.log('token:' + data.access_token);
-        // const token = data.access_token;
+        const token = data.access_token;
         // console.log('token a guardar:' + token);
-        // localStorage.setItem('token_ig', token);
+        localStorage.setItem('token_ig', token);
         // res.json(data);
         res.redirect('/instagram/profile');
     } catch (e) {
@@ -66,7 +66,10 @@ app.get('/instagram/callback', async(req, res) => {
 
 //ruta de profile
 app.get('/instagram/profile', async(req, res) => {
-    instagram.get('users/self', (err, data) => {
+
+    const elToken = localStorage.getItem('token_ig')
+
+    instagram.get('users/self', { accessToken: elToken }, (err, data) => {
         if (err) {
             console.log('error aqui');
             console.log(JSON.stringify(err));
