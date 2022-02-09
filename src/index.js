@@ -85,7 +85,7 @@ app.get('/instagram/profile', async(req, res) => {
     const getUser = await request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
         (err, result, body) => {
             if (err) { return console.log(err.message); }
-            console.log(result.body);
+            return result.body;
         }
     );
 
