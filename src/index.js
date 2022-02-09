@@ -75,22 +75,21 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de profile
-app.get('/instagram/profile', (req, res) => {
+app.get('/instagram/profile', async(req, res) => {
 
     const Token = localStorage.getItem('token');
     const UserId = localStorage.getItem('user_id');
     console.log('token: ' + Token);
     console.log('user_id: ' + UserId);
 
-    request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
+    const getUser = await request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
         (err, result, body) => {
             if (err) { return console.log(err.message); }
-
-            console.log(body.url);
             console.log(result.body);
-            console.log(body.explanation);
         }
     );
+
+    res.json(getUser);
 
     // axios.get(`https://graph.instagram.com/${UserId}?fields=id,username&access_token=${Token}`)
     //     .then(response => { console.log(response.data); })
