@@ -92,7 +92,7 @@ app.get('/instagram/profile', (req, res) => {
     axios.get('https://graph.instagram.com/me/media?fields=id,captio,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
         .then(response => {
             console.log(response.data);
-            res.json(response);
+            return res.json(response.data);
         })
         .catch(err => { console.log(err.message); });
 
