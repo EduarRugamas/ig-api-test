@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('cookie-session');
 const engine = require('ejs-mate');
 const axios = require('axios').default;
-
+const { getUserIntagram } = require('./utils/Instagram_api');
 const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./scratch');
 
@@ -69,28 +69,23 @@ app.get('/instagram/callback', async(req, res) => {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
 
-        req.session.access_token = data.access_token;
-        req.session.user_id = data.user_id;
+        res.cookie('token', data.access_token).send('token save');
+        res.cookie('user_id', data.user_id).send('user_id save');
 
-        instagram.config.accessToken = req.session.access_token;
+        // req.session.access_token = data.access_token;
+        // req.session.user_id = data.user_id;
 
-        localStorage.setItem('token', data.access_token);
-        console.log('token: ' + data.access_token);
-        localStorage.setItem('user_id', data.user_id);
-        console.log('user_id: ' + data.user_id);
+        // instagram.config.accessToken = req.session.access_token;
 
-        console.log(instagram);
+        // localStorage.setItem('token', data.access_token);
+        // console.log('token: ' + data.access_token);
+        // localStorage.setItem('user_id', data.user_id);
+        // console.log('user_id: ' + data.user_id);
+
         res.render('profile');
     } catch (err) {
         res.json(err.message);
     }
-
-
-
-
-
-
-
 });
 
 
@@ -98,10 +93,22 @@ app.get('/instagram/callback', async(req, res) => {
 //ruta de profile
 app.get('/instagram/profile', (req, res) => {
 
-    const Token = localStorage.getItem('token');
-    const UserId = localStorage.getItem('user_id');
-    console.log('token: ' + Token);
-    console.log('user_id: ' + UserId);
+    // const Token = localStorage.getItem('token');
+    // const UserId = localStorage.getItem('user_id');
+    // console.log('token: ' + Token);
+    // console.log('user_id: ' + UserId);
+
+    const token = req.cookies.token;
+    const user_id = req.cookies.user_id;
+    console.log('token en cookie: ' + token);
+    console.log('user_id en cookie: ' + user_id);
+
+
+    axios.get('https://graph.instagram.com/me?fields=id,account_type,media_count,username&access_token=' + token)
+        .then(result => { return res.json(result.data) })
+        .catch(err => { res.json(err.message) });
+
+
 
     // const getUser = request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
     //     (err, result, body) => {
@@ -109,13 +116,13 @@ app.get('/instagram/profile', (req, res) => {
     //         return result.body;
     //     }
     // );
-
-    axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
-        .then(response => {
-            console.log(response.data);
-            return res.json(response.data);
-        })
-        .catch(err => { console.log(err.message); });
+    //peticion para obtener las fotos
+    // axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
+    //     .then(response => {
+    //         console.log(response.data);
+    //         return res.json(response.data);
+    //     })
+    //     .catch(err => { console.log(err.message); });
 
 });
 
