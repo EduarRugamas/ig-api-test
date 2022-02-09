@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const engine = require('ejs-mate');
 const axios = require('axios').default;
+const request = require('request');
 const LocalStorage = require('node-localstorage').LocalStorage;
 
 const localStorage = new LocalStorage('./scratch');
@@ -81,9 +82,18 @@ app.get('/instagram/profile', (req, res) => {
     console.log('token: ' + Token);
     console.log('user_id: ' + UserId);
 
-    axios.get(`https://graph.instagram.com/${UserId}?fields=id,username&access_token=${Token}`)
-        .then(response => { console.log(response.data); })
-        .catch(err => { console.log(err.message); });
+    request('https://graph.instagram.com/' + UserId + '?fields=id,username&access_token=' + Token, { json: true },
+        (err, result, body) => {
+            if (err) { return console.log(err.message); }
+
+            console.log(body.url);
+            console.log(body.explanation);
+        }
+    );
+
+    // axios.get(`https://graph.instagram.com/${UserId}?fields=id,username&access_token=${Token}`)
+    //     .then(response => { console.log(response.data); })
+    //     .catch(err => { console.log(err.message); });
 
 });
 
