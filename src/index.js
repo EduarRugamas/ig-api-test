@@ -4,11 +4,11 @@ const Instagram = require('node-instagram').default;
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const session = require('cookie-session');
 const engine = require('ejs-mate');
 const axios = require('axios').default;
-const request = require('request');
-const LocalStorage = require('node-localstorage').LocalStorage;
 
+const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./scratch');
 
 
@@ -16,7 +16,10 @@ const localStorage = new LocalStorage('./scratch');
 //config 
 const port = process.env.PORT || 3001;
 const app = express();
+
+//middlewares
 app.use(morgan('dev'));
+app.use(session({ secret: 'mysecretword', signed: true }));
 
 //config ejs and cookieParser
 app.engine('ejs', engine);
@@ -61,15 +64,33 @@ app.get('/instagram/authorize', (req, res) => {
 //ruta de callback of instagram 
 app.get('/instagram/callback', async(req, res) => {
     console.log('iniciando session en instagram');
-    const code = req.query.code;
-    const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
 
-    localStorage.setItem('token', data.access_token);
-    console.log('token: ' + data.access_token);
-    localStorage.setItem('user_id', data.user_id);
-    console.log('user_id: ' + data.user_id);
+    try {
+        const code = req.query.code;
+        const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
 
-    res.render('profile');
+        req.session.access_token = data.access_token;
+        req.session.user_id = data.user_id;
+
+        instagram.config.accessToken = req.session.access_token;
+
+        localStorage.setItem('token', data.access_token);
+        console.log('token: ' + data.access_token);
+        localStorage.setItem('user_id', data.user_id);
+        console.log('user_id: ' + data.user_id);
+
+        console.log(instagram);
+        res.render('profile');
+    } catch (err) {
+        res.json(err.message);
+    }
+
+
+
+
+
+
+
 });
 
 
@@ -89,7 +110,7 @@ app.get('/instagram/profile', (req, res) => {
     //     }
     // );
 
-    axios.get('https://graph.instagram.com/me/media?fields=id,captio,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
+    axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
         .then(response => {
             console.log(response.data);
             return res.json(response.data);
