@@ -82,11 +82,12 @@ app.get('/instagram/profile', (req, res) => {
     console.log('token: ' + Token);
     console.log('user_id: ' + UserId);
 
-    request('https://graph.instagram.com/' + UserId + '?fields=id,username&access_token=' + Token, { json: true },
+    request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
         (err, result, body) => {
             if (err) { return console.log(err.message); }
 
             console.log(body.url);
+            console.log(result.body);
             console.log(body.explanation);
         }
     );
