@@ -78,8 +78,8 @@ app.get('/instagram/profile', (req, res) => {
 
     const Token = localStorage.getItem('token');
     const UserId = localStorage.getItem('user_id');
-    console.log('token: ' + elToken);
-    console.log('user_id: ' + elUserId);
+    console.log('token: ' + Token);
+    console.log('user_id: ' + UserId);
 
     axios.get(`https://graph.instagram.com/${UserId}?fields=id,username&access_token=${Token}`)
         .then(response => { console.log(response.data); })
