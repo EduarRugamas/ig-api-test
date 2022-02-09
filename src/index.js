@@ -75,25 +75,26 @@ app.get('/instagram/callback', async(req, res) => {
 
 
 //ruta de profile
-app.get('/instagram/profile', async(req, res) => {
+app.get('/instagram/profile', (req, res) => {
 
     const Token = localStorage.getItem('token');
     const UserId = localStorage.getItem('user_id');
     console.log('token: ' + Token);
     console.log('user_id: ' + UserId);
 
-    const getUser = await request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
-        (err, result, body) => {
-            if (err) { return console.log(err.message); }
-            return result.body;
-        }
-    );
+    // const getUser = request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
+    //     (err, result, body) => {
+    //         if (err) { return console.log(err.message); }
+    //         return result.body;
+    //     }
+    // );
 
-    res.json(getUser);
-
-    // axios.get(`https://graph.instagram.com/${UserId}?fields=id,username&access_token=${Token}`)
-    //     .then(response => { console.log(response.data); })
-    //     .catch(err => { console.log(err.message); });
+    axios.get('https://graph.instagram.com/me/media?fields=id,captio,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
+        .then(response => {
+            console.log(response.data);
+            res.json(response);
+        })
+        .catch(err => { console.log(err.message); });
 
 });
 
