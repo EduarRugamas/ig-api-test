@@ -94,7 +94,7 @@ app.get('/instagram/profile', (req, res) => {
 
     axios.get('https://graph.instagram.com/me?fields=id,account_type,media_count,username&access_token=' + Token)
         .then(result => { return res.render('profile', { perfil: result.data }) })
-        .catch(err => { res.json(err.message) });
+        .catch(err => { res.json(err.message), console.log('error aqui:' + err.message); });
 
 });
 
@@ -109,7 +109,7 @@ app.get('/instagram/media', (req, res) => {
     const Token = localStorage.getItem('token');
     axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
         .then(response => { return res.render('media', { user_media: response.data.data }); })
-        .catch(err => { return res.json(err.message); });
+        .catch(err => { return res.json(err.message), console.log('error aqui:' + err.message); });
 
 });
 
