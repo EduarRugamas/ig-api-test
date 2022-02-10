@@ -108,8 +108,8 @@ app.get('/instagram/home', (req, res) => {
 app.get('/instagram/media', (req, res) => {
     const Token = localStorage.getItem('token');
     axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
-        .then(response => {})
-        .catch(err => {});
+        .then(response => { return res.render('media', { user_media: response.data.data }); })
+        .catch(err => { return res.json(err.message); });
 
 });
 
