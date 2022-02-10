@@ -93,14 +93,14 @@ app.get('/instagram/profile', (req, res) => {
 
 
     axios.get('https://graph.instagram.com/me?fields=id,account_type,media_count,username&access_token=' + Token)
-        .then(result => { return res.json(result.data) })
+        .then(result => { return res.render('profile', { perfil: result.data }) })
         .catch(err => { res.json(err.message) });
 
 });
 
 app.get('/instagram/home', (req, res) => {
 
-    res.render('')
+    res.render('home');
 
 });
 
