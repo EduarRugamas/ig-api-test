@@ -91,7 +91,7 @@ app.get('/instagram/profile', (req, res) => {
     console.log('user_id: ' + UserId);
 
 
-    axios.get('https://graph.instagram.com/me?fields=id,account_type,media_count,username&access_token=' + Token)
+    axios.get('https://graph.instagram.com/v13.0/' + UserId + '?fields=id,account_type,media_count,username&access_token=' + Token)
         .then(result => { return res.json(result.data) })
         .catch(err => { res.json(err.message) });
 
