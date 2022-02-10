@@ -8,6 +8,7 @@ const session = require('cookie-session');
 const engine = require('ejs-mate');
 const axios = require('axios').default;
 const { getUserIntagram } = require('./utils/Instagram_api');
+const { token } = require('morgan');
 const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./scratch');
 
@@ -74,7 +75,7 @@ app.get('/instagram/callback', async(req, res) => {
         localStorage.setItem('user_id', data.user_id);
         console.log('user_id: ' + data.user_id);
 
-        res.render('profile');
+        res.redirect('/instagram/home');
     } catch (err) {
         res.json(err.message);
     }
@@ -86,18 +87,29 @@ app.get('/instagram/callback', async(req, res) => {
 app.get('/instagram/profile', (req, res) => {
 
     const Token = localStorage.getItem('token');
-    const UserId = localStorage.getItem('user_id');
-    console.log('token: ' + Token);
-    console.log('user_id: ' + UserId);
+    // const UserId = localStorage.getItem('user_id');
+    // console.log('token: ' + Token);
+    // console.log('user_id: ' + UserId);
 
 
-    axios.get('https://graph.instagram.com/v13.0/' + UserId + '?fields=id,account_type,media_count,username&access_token=' + Token)
+    axios.get('https://graph.instagram.com/me?fields=id,account_type,media_count,username&access_token=' + Token)
         .then(result => { return res.json(result.data) })
         .catch(err => { res.json(err.message) });
 
+});
+
+app.get('/instagram/home', (req, res) => {
+
+    res.render('')
+
+});
 
 
-
+app.get('/instagram/media', (req, res) => {
+    const Token = localStorage.getItem('token');
+    axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
+        .then(response => {})
+        .catch(err => {});
 
 });
 
