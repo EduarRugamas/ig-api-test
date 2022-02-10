@@ -47,18 +47,22 @@ app.get('/login', (req, res) => {
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
 
-    res.redirect(
-        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-            scope: [
-                'email',
-                'user_profile',
-                'user_photos',
-                'instagram_basic',
-                'instagram_graph_user_profile',
-                'instagram_graph_user_media'
-            ]
-        })
-    );
+    axios.get('https://api.instagram.com/oauth/authorize?client_id=' + process.env.IG_CLIENT_ID + '&redirect_uri=' + process.env.IG_URI_REDIRECT + '&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&response_type=code')
+        .then(response => { res.render(response); })
+        .catch(error => { res.json(error); });
+
+    // res.redirect(
+    //     instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
+    //         scope: [
+    //             'email',
+    //             'user_profile',
+    //             'user_photos',
+    //             'instagram_basic',
+    //             'instagram_graph_user_profile',
+    //             'instagram_graph_user_media'
+    //         ]
+    //     })
+    // );
 
 });
 
