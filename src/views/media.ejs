@@ -1,7 +1,7 @@
 <%- layout('layouts/main.ejs')%>
     <div class="col-md-9">
         <div class="row">
-            <%= user_media.forEach( function (media){%>
+            <% user_media.forEach( function (media){ %>
                 <div class="col-md-4">
                     <div class="card mb-2">
                         <img src="<%= media.media_url%>" alt="vacio" class="card-img-top">
