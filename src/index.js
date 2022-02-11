@@ -47,22 +47,18 @@ app.get('/login', (req, res) => {
 //ruta Oauth instagram 
 app.get('/instagram/authorize', (req, res) => {
 
-    axios.get('https://api.instagram.com/oauth/authorize?client_id=' + process.env.IG_CLIENT_ID + '&redirect_uri=' + process.env.IG_URI_REDIRECT + '&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&response_type=code')
-        .then(response => { res.render(response.data); })
-        .catch(error => { res.json(error); });
-
-    // res.redirect(
-    //     instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
-    //         scope: [
-    //             'email',
-    //             'user_profile',
-    //             'user_photos',
-    //             'instagram_basic',
-    //             'instagram_graph_user_profile',
-    //             'instagram_graph_user_media'
-    //         ]
-    //     })
-    // );
+    res.redirect(
+        instagram.getAuthorizationUrl(process.env.IG_URI_REDIRECT, {
+            scope: [
+                'email',
+                'user_profile',
+                'user_photos',
+                'instagram_basic',
+                'instagram_graph_user_profile',
+                'instagram_graph_user_media'
+            ]
+        })
+    );
 
 });
 
@@ -75,8 +71,8 @@ app.get('/instagram/callback', async(req, res) => {
         const data = await instagram.authorizeUser(code, process.env.IG_URI_REDIRECT);
 
         localStorage.setItem('token', data.access_token);
-        console.log('token: ' + data.access_token);
         localStorage.setItem('user_id', data.user_id);
+        console.log('token: ' + data.access_token);
         console.log('user_id: ' + data.user_id);
 
         res.redirect('/instagram/home');
@@ -118,35 +114,6 @@ app.get('/instagram/media', (req, res) => {
 });
 
 app.get('/instagram/logout', () => {});
-
-//axios 
-// axios.post(`https://api.instagram.com/oauth/access_token?client_id=${process.env.IG_CLIENT_ID}&client_secret=${process.env.IG_CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${process.env.IG_URI_REDIRECT}&code=${code}`)
-//     .then(response => {
-//         res.json(response.data);
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     });
-// axios.get(`https://api.instagram.com/oauth/authorize?client_id=${process.env.IG_CLIENT_ID}&redirect_uri=${process.env.IG_URI_REDIRECT}&scope=user_profile,instagram_graph_user_profile,instagram_graph_user_media&response_type=code`)
-// .then(response => {
-//     console.log(response.config.transformResponse);
-//     res.redirect(process.env.IG_URI_REDIRECT);
-// }).catch(err => { console.log(err) });
-// const getUser = request('https://graph.instagram.com/me?fields=id,username&access_token=' + Token, { json: true },
-//     (err, result, body) => {
-//         if (err) { return console.log(err.message); }
-//         return result.body;
-//     }
-// );
-//peticion para obtener las fotos
-// axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + Token)
-//     .then(response => {
-//         console.log(response.data);
-//         return res.json(response.data);
-//     })
-//     .catch(err => { console.log(err.message); });
-
-
 
 
 app.listen(port, () => {
