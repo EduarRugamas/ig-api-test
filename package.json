@@ -18,6 +18,7 @@
         "dotenv": "^16.0.0",
         "ejs-mate": "^3.0.0",
         "express": "^4.17.2",
+        "joi": "^17.4.2",
         "morgan": "^1.10.0",
         "node-instagram": "^4.3.0",
         "node-localstorage": "^2.2.1",
