@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 //config ejs and cookieParser
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, '/src/views'));
     // app.use(cookieParser());
 
 //ruta raiz
