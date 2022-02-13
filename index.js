@@ -106,9 +106,9 @@ app.set('views', path.join(__dirname, 'views'))
 // app.get('/instagram/logout', () => {});
 
 if (config.env === 'production') {
-    app.use('/v1', routes);
+    app.use('/', routes);
 } else if (config.env === 'development') {
-    app.use('/v1', routes);
+    app.use('/', routes);
 }
 
 
