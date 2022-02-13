@@ -9,7 +9,7 @@ const instagram = new Instagram({
 
 
 
-const Authorization = (req, res) => {
+const authorization = (req, res) => {
     res.redirect(
         instagram.getAuthorizationUrl(config.ig_uri_redirect, {
             scope: [
@@ -38,6 +38,6 @@ const userAuthorization = async(req, res) => {
 
 
 module.exports = {
-    Authorization,
+    authorization,
     userAuthorization
 }
