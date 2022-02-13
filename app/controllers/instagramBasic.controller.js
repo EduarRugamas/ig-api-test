@@ -8,6 +8,11 @@ const instagram = new Instagram({
 });
 
 
+const index = (req, res) => {
+    res.render('index');
+}
+
+
 
 const authorization = (req, res) => {
     res.redirect(
@@ -39,5 +44,6 @@ const userAuthorization = async(req, res) => {
 
 module.exports = {
     authorization,
-    userAuthorization
+    userAuthorization,
+    index
 }

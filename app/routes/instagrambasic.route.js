@@ -4,6 +4,11 @@ const { instagramBasicController } = require('../controllers');
 const router = express.Router();
 
 
-router.route('/authorize').get(instagramBasicController.Authorization);
+router.route('/').get(instagramBasicController.index);
 
-router.route('/callback').get(instagramBasicController.userAuthorization)
+router.route('/authorize').get(instagramBasicController.authorization);
+
+router.route('/callback').get(instagramBasicController.userAuthorization);
+
+
+module.exports = router;
