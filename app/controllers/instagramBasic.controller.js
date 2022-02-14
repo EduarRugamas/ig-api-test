@@ -80,8 +80,6 @@ const userAuthorization = async (req, res) => {
 
 module.exports = {
     authorization,
-    authorizationWithAxios,
     userAuthorization,
-    userAuthorizationWithAxios,
     index
 }
