@@ -9,8 +9,10 @@ const getInformationUser = async (req, res) => {
     console.log('token obtenido' + token);
 
     try {
-        const result = await axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + token, {headers: { 'Content-type': 'application/json ' }});
-        res.json(result.data);
+        await axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + token)
+            .then(response => {res.json(response.data);})
+            .catch(error => {res.json(error);})
+
     }catch (e) {
         res.json(e.message);
     }
