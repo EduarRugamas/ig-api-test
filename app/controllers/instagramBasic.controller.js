@@ -59,6 +59,7 @@ const userAuthorization = async (req, res) => {
         localStorage.setItem('user_id', data.user_id);
         console.log('token: ' + data.access_token);
         console.log('user_id: ' + data.user_id);
+        res.json(data)
     } catch (error) {
         res.json(error.message);
     }
