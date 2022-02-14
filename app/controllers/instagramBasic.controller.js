@@ -32,7 +32,8 @@ const authorization = (req, res) => {
                 'user_photos',
                 'instagram_basic',
                 'instagram_graph_user_profile',
-                'instagram_graph_user_media'
+                'instagram_graph_user_media',
+                'business_management'
             ],
             state: '1'
         })
