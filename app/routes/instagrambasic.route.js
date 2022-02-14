@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route('/authorization').get(instagramBasicController.authorization);
 
-router.route('/callback').get(instagramBasicController.userAuthorizationWithAxios);
+router.route('/callback').get(instagramBasicController.userAuthorization);
 
 
 module.exports = router;

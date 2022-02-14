@@ -55,7 +55,10 @@ const userAuthorization = async (req, res) => {
     try {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, config.ig_uri_redirect);
-        return res.json(data);
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('user_id', data.user_id);
+        console.log('token: ' + data.access_token);
+        console.log('user_id: ' + data.user_id);
     } catch (error) {
         res.json(error.message);
     }
@@ -67,6 +70,6 @@ module.exports = {
     authorization,
     authorizationWithAxios,
     userAuthorization,
-    index,
-    userAuthorizationWithAxios
+    userAuthorizationWithAxios,
+    index
 }
