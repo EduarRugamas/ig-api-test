@@ -17,10 +17,7 @@ const index = (req, res) => {
 const authorizationWithAxios = (req, res) => {
     axios.get('https://api.instagram.com/oauth/authorize?client_id='+ config.ig_client_id + '&redirect_uri='+config.ig_uri_redirect + '&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&&response_type=code', {headers: {'Content-Type': 'text/html'}} ).then(response => {
         console.log(response.data);
-        // res.render('authorization', { login: response.data });
-        const htmlResponse = document.getElementById('body').innerHTML = response.data;
-        res.render(htmlResponse);
-        // res.sendFile()
+        res.render('authorization', { login: response.data });
     }).catch( error => {
         res.json(error.message);
     } );
