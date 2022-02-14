@@ -70,7 +70,7 @@ const userAuthorization = async (req, res) => {
         // console.log('token: ' + data.access_token);
         // console.log('user_id: ' + data.user_id);
         // res.json
-        res.redirect('/')
+        res.render('home')
     } catch (error) {
         res.json(error.message);
     }
