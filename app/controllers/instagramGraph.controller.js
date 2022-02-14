@@ -4,7 +4,7 @@ const localStorage = require('localStorage');
 
 
 
-const getInformationUser = async function (req, res) {
+const getInformationUser = async (req, res) => {
     const token = localStorage.getItem('access_token');
     console.log('token obtenido' + token);
 
@@ -14,8 +14,6 @@ const getInformationUser = async function (req, res) {
     }catch (e) {
         res.json(e.message);
     }
-
-
 
 };
 
