@@ -3,7 +3,7 @@ const { instagramGraphController } = require('../controllers');
 
 const router = express.Router();
 
-router.route('/photos ').get()
+router.route('/photos ').get(instagramGraphController.getInformationUser);
 
 
 

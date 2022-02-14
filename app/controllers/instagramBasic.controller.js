@@ -55,11 +55,22 @@ const userAuthorization = async (req, res) => {
     try {
         const code = req.query.code;
         const data = await instagram.authorizeUser(code, config.ig_uri_redirect);
+
+        if (data.access_token === undefined ){
+            res.json({
+                message: 'No existe token de accesso'
+            });
+        }else if (data.user_id === undefined){
+            res.json({
+                message: 'No existe user_id'
+            });
+        }
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('user_id', data.user_id);
-        console.log('token: ' + data.access_token);
-        console.log('user_id: ' + data.user_id);
-        res.json(data)
+        // console.log('token: ' + data.access_token);
+        // console.log('user_id: ' + data.user_id);
+        // res.json
+        res.redirect('/')
     } catch (error) {
         res.json(error.message);
     }
