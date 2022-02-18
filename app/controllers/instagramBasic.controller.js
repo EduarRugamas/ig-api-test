@@ -9,18 +9,14 @@ const instagram = new Instagram({
     clientSecret: config.ig_client_secret,
 });
 
+const url = 'https://api.instagram.com/oauth/authorize?client_id=' + config.ig_client_id + '&redirect_uri=' + config.ig_uri_redirect + '&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&response_type=code';
 
 const index = (req, res) => {
     res.render('index');
 }
 
 const authorizationWithAxios = (req, res) => {
-    axios.get('https://api.instagram.com/oauth/authorize?client_id=' + config.ig_client_id + '&redirect_uri=' + config.ig_uri_redirect + '&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&response_type=code').then(response => {
-        console.log(response.data);
-        window.open(response.data, '_blank').focus();
-    }).catch(error => {
-        res.json(error.message);
-    });
+    window.open(url, '_blank').focus();
 };
 
 const authorization = (req, res) => {
