@@ -1,6 +1,7 @@
 const Instagram = require('node-instagram').default;
 const config = require('../../app/config/config');
 const localStorage = require('localStorage');
+const open = require('open');
 const axios = require('axios').default;
 
 
@@ -16,7 +17,7 @@ const index = (req, res) => {
 }
 
 const authorizationWithAxios = (req, res) => {
-    window.open(url).frames.focus()
+    open(url)
 };
 
 const authorization = (req, res) => {

@@ -24,6 +24,7 @@
         "morgan": "^1.10.0",
         "node-instagram": "^4.3.0",
         "node-localstorage": "^2.2.1",
+        "open": "^8.4.0",
         "pug": "^3.0.2",
         "request": "^2.88.2"
     },
