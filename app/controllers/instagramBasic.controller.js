@@ -17,7 +17,8 @@ const index = (req, res) => {
 }
 
 const authorizationWithAxios = (req, res) => {
-    open(url)
+
+    res.send(open(url));
 };
 
 const authorization = (req, res) => {
