@@ -16,7 +16,7 @@ const index = (req, res) => {
 }
 
 const authorizationWithAxios = (req, res) => {
-    window.open(url, '_blank').focus();
+    window.open(url).frames.focus()
 };
 
 const authorization = (req, res) => {
