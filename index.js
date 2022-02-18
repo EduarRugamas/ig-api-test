@@ -4,9 +4,7 @@ const routes = require('./app/routes');
 const engine = require('ejs-mate');
 const morgan = require('morgan');
 const path = require("path");
-const axios = require('axios').default;
-const LocalStorage = require('node-localstorage').LocalStorage;
-const localStorage = new LocalStorage('./scratch');
+const body_parser = require('body-parser');
 
 
 
@@ -18,6 +16,8 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(body_parser.urlencoded({extended: true}));
+app.use(body_parser.json);
 
 //config ejs and cookieParser
 app.engine('ejs', engine);
