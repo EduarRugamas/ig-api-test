@@ -21,38 +21,28 @@ const index = (req, res) => {
     return authorizationUri;
 }
 
-const authorizationWithFunction = (req, res) => {
+const authorization = (req, res) => {
     res.redirect(authorizationUrl());
 };
 
-const authorization = (req, res) => {
-    res.redirect(
-        instagram.getAuthorizationUrl(config.ig_uri_redirect, {
-            scope: [
-                'email',
-                'user_profile',
-                'user_photos',
-                'instagram_basic',
-                'instagram_graph_user_profile',
-                'instagram_graph_user_media',
-                'business_management'
-            ],
-            state: '1'
-        })
-    );
-};
 
-// const userAuthorizationWithAxios = async (req, res) => {
-//     const code = req.query.code;
-//     try {
-//         const response = await axios.post('https://api.instagram.com/oauth/access_token?client_id='+ config.ig_client_id+'&client_secret='+config.ig_client_secret+'&grant_type=authorization_code&redirect_uri='+config.ig_uri_redirect+'&code='+code);
-//         console.log(response);
-//         res.json(response);
-//     }catch (e) {
-//         res.json(e)
-//     }
-//
-// };
+const userAuthorizationWithAxios = async (req, res) => {
+    const code = req.query.code;
+    try {
+        const response = await axios.post('https://api.instagram.com/oauth/access_token', {
+            client_id: config.ig_client_id,
+            client_secret: config.ig_client_secret,
+            grant_type: 'authorization_code',
+            redirect_uri: config.ig_uri_redirect,
+            code: code
+        });
+        console.log(response.data);
+        res.json(response.data);
+    }catch (e) {
+        res.json(e.message);
+    }
+
+};
 
 const userAuthorization = async (req, res) => {
     try {
@@ -84,6 +74,6 @@ const userAuthorization = async (req, res) => {
 module.exports = {
     authorization,
     userAuthorization,
-    authorizationWithFunction,
+    userAuthorizationWithAxios,
     index
 }
