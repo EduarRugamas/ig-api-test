@@ -60,11 +60,12 @@ const userAuthorizationWithAxios = async (req, res) => {
         }, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
         }).then(response => {
-
+            res.json(response.data);
             console.log(response.data);
+            console.log(response.request);
 
         }).catch(error => {
-
+            res.json(error.message);
             console.log(error.message);
 
         });
