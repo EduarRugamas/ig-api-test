@@ -1,7 +1,7 @@
 const Instagram = require('node-instagram').default;
 const config = require('../../app/config/config');
 const localStorage = require('localStorage');
-const open = require('open');
+const isArray = require('lodash/isArray');
 const axios = require('axios').default;
 
 
@@ -15,21 +15,42 @@ const index = (req, res) => {
     res.render('index');
 }
 
- function authorizationUrl() {
+ function authorizationUrl(permisions) {
+    let authorizationUri = `https://api.instagram.com/oauth/authorize/?client_id=${config.ig_client_id}&redirect_uri=${config.ig_uri_redirect}&response_type=code`;
 
-    const authorizationUri = `https://api.instagram.com/oauth/authorize/?client_id=${config.ig_client_id}&redirect_uri=${config.ig_uri_redirect}&scope=email,user_profile,user_photos,instagram_basic,instagram_graph_user_profile,instagram_graph_user_media&response_type=code&state=1`;
+    if(permisions.scope){
+        if (isArray(permisions.scope)){
+           permisions.scope = permisions.scope.join('+');
+        }
+        authorizationUri += `&scope=${permisions.scope}`;
+    }
+    if (permisions.state){
+        authorizationUri += `&state=${permisions.state}`
+    }
     return authorizationUri;
 }
 
 const authorization = (req, res) => {
-    res.redirect(authorizationUrl());
+    res.redirect(
+        authorizationUrl(
+            {
+            scope: [
+            'email',
+            'user_profile',
+            'user_photos',
+            'instagram_basic',
+            'instagram_graph_user_profile',
+            'instagram_graph_user_media'
+            ]}
+        )
+    );
 };
 
 
 const userAuthorizationWithAxios = async (req, res) => {
     const code = req.query.code;
     try {
-        const response = await axios.post('https://api.instagram.com/oauth/access_token/', {
+        const response = await axios.post('https://api.instagram.com/oauth/access_token', {
             body: {
                 client_id: config.ig_client_id,
                 client_secret: config.ig_client_secret,
@@ -38,7 +59,7 @@ const userAuthorizationWithAxios = async (req, res) => {
                 code: code
             },
             headers: {
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8'
             }
         });
         console.log(response.data.access_token);
