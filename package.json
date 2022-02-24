@@ -14,8 +14,6 @@
     "dependencies": {
         "axios": "^0.25.0",
         "body-parser": "^1.19.2",
-        "cookie-parser": "^1.4.6",
-        "cookie-session": "^2.0.0",
         "dotenv": "^16.0.0",
         "ejs-mate": "^3.0.0",
         "express": "^4.17.2",
@@ -23,10 +21,8 @@
         "localStorage": "^1.0.4",
         "lodash": "^4.17.21",
         "morgan": "^1.10.0",
+        "node-fetch": "^3.2.0",
         "node-instagram": "^4.3.0",
-        "node-localstorage": "^2.2.1",
-        "open": "^8.4.0",
-        "pug": "^3.0.2",
         "request": "^2.88.2"
     },
     "devDependencies": {

@@ -3,6 +3,7 @@ const config = require('../../app/config/config');
 const localStorage = require('localStorage');
 const isArray = require('lodash/isArray');
 const axios = require('axios').default;
+const fetch = require('node-fetch');
 
 
 const instagram = new Instagram({
@@ -49,26 +50,24 @@ const authorization = (req, res) => {
 
 const userAuthorizationWithAxios = async (req, res) => {
     const code = req.query.code;
-    try {
-        await axios.post('https://api.instagram.com/oauth/access_token', {
-            code: code,
-            client_id: config.ig_client_id,
-            client_secret: config.ig_client_secret,
-            redirect_uri: config.ig_uri_redirect,
-            grant_type: 'authorization_code'
-        }, {
-            headers: {'Content-type': 'application/json'}
-        }).then( response => {
-            res.json(response.data);
-            console.log(response.request);
-            console.log(response.config);
-            console.log(response.headers);
-        }).catch(error => {
-            res.json(error.message)
-        });
-    }catch (e) {
-        res.json(e);
+
+    const body = {
+      client_id: config.ig_client_id,
+      client_secret: config.ig_client_secret,
+      grant_type: 'authorization_code',
+      redirect_uri: config.ig_uri_redirect,
+      code: code
     }
+
+    const response = await fetch('https://api.instagram.com/oauth/access_token', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    const data = await response.json();
+
+    res.json(data);
 
 }
 
