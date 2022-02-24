@@ -50,15 +50,15 @@ const authorization = (req, res) => {
 
 const userAuthorizationWithAxios = async (req, res) => {
     const code = req.query.code;
-const params = new URLSearchParams();
+
     try{
 
         const body = {
-            client_id: '657503782040055',
-            client_secret: `${config.ig_client_secret}`,
-            grant_type: 'authorization_code',
-            redirect_uri: `${config.ig_uri_redirect}`,
-            code: code
+            'client_id': config.ig_client_id,
+            'client_secret': `${config.ig_client_secret}`,
+            'grant_type': 'authorization_code',
+            'redirect_uri': `${config.ig_uri_redirect}`,
+            'code': code
         }
 
         const response = await fetch('https://api.instagram.com/oauth/access_token', {
@@ -73,13 +73,6 @@ const params = new URLSearchParams();
     }catch (e) {
         res.json(e.message);
     }
-
-
-
-
-
-
-
 
 }
 
