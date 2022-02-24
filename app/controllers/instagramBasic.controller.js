@@ -51,20 +51,17 @@ const authorization = (req, res) => {
 
 const userAuthorizationWithAxios = async (req, res) => {
     const code = req.query.code;
-
     try{
-        await axios.post('https://api.instagram.com/oauth/access_token', queryString.stringify({
+       const response =  await axios.post('https://api.instagram.com/oauth/access_token', queryString.stringify({
             'client_id': config.ig_client_id,
             'client_secret': config.ig_client_secret,
             'grant_type': 'authorization_code',
             'redirect_uri': config.ig_uri_redirect,
             'code': code
-        })).then(response => {
-            console.log(response.data);
-            console.log(response.request);
-        }).catch(error => {
-            console.log(error);
-        });
+        }));
+       res.json(response.data);
+       console.log(response.data.access_token);
+       console.log(response.data.user_id);
     }catch (e) {
         res.json(e.message);
     }
