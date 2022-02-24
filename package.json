@@ -23,6 +23,7 @@
         "morgan": "^1.10.0",
         "node-fetch": "^3.2.0",
         "node-instagram": "^4.3.0",
+        "query-string": "^7.1.1",
         "request": "^2.88.2"
     },
     "devDependencies": {

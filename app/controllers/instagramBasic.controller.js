@@ -4,6 +4,7 @@ const localStorage = require('localStorage');
 const isArray = require('lodash/isArray');
 const axios = require('axios').default;
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const queryString = require('query-string');
 
 
 const instagram = new Instagram({
@@ -52,24 +53,17 @@ const userAuthorizationWithAxios = async (req, res) => {
     const code = req.query.code;
 
     try{
-
-        const body = {
-            code: code,
-            redirect_uri: config.ig_uri_redirect,
-            client_id: config.ig_client_id,
-            client_secret: config.ig_client_secret,
-            grant_type: 'authorization_code'
-        }
-
-        const response = await fetch('https://api.instagram.com/oauth/access_token', {
-            method: 'POST',
-            body: body,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+        await axios.post('https://api.instagram.com/oauth/access_token', queryString.stringify({
+            'client_id': config.ig_client_id,
+            'client_secret': config.ig_client_secret,
+            'grant_type': 'authorization_code',
+            'code': code
+        })).then(response => {
+            console.log(response.data);
+            console.log(response.request);
+        }).catch(error => {
+            console.log(error);
         });
-        const data = await response.json();
-
-
-        res.json(data);
     }catch (e) {
         res.json(e.message);
     }
