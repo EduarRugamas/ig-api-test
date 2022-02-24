@@ -57,6 +57,7 @@ const userAuthorizationWithAxios = async (req, res) => {
             'client_id': config.ig_client_id,
             'client_secret': config.ig_client_secret,
             'grant_type': 'authorization_code',
+            'redirect_uri': config.ig_uri_redirect,
             'code': code
         })).then(response => {
             console.log(response.data);
