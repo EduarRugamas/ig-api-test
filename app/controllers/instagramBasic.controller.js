@@ -3,7 +3,7 @@ const config = require('../../app/config/config');
 const localStorage = require('localStorage');
 const isArray = require('lodash/isArray');
 const axios = require('axios').default;
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 
 const instagram = new Instagram({
@@ -78,7 +78,7 @@ const userAuthorization = async (req, res) => {
 
         if (data.access_token === undefined ){
             res.json({
-                message: 'No existe token de accesso'
+                message: 'No existe token de access'
             });
         }else if (data.user_id === undefined){
             res.json({
