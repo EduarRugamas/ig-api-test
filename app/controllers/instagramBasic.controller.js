@@ -62,11 +62,12 @@ const userAuthorizationWithAxios = async (req, res) => {
     const response = await fetch('https://api.instagram.com/oauth/access_token', {
         method: 'POST',
         body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
     });
 
     const data = await response.json();
-
+    console.log(data.status);
+    console.log(data.headers.raw());
     res.json(data);
 
 }
