@@ -1,12 +1,8 @@
 const express = require('express');
 const config = require('./app/config/config');
 const routes = require('./app/routes');
-const engine = require('ejs-mate');
 const morgan = require('morgan');
 const path = require("path");
-const body_parser = require('body-parser');
-
-
 
 //config
 const port = config.port || 3001;
@@ -16,14 +12,13 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(body_parser.urlencoded({extended: true}));
-// app.use(body_parser.json);
+
 
 //config ejs and cookieParser
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/src/views'));
-    // app.use(cookieParser());
+app.use(cookieParser());
 
 if (config.env === 'production') {
     app.use('/', routes);

@@ -7,12 +7,6 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const queryString = require('query-string');
 
 
-const instagram = new Instagram({
-    clientId: config.ig_client_id,
-    clientSecret: config.ig_client_secret,
-});
-
-
 const index = (req, res) => {
     res.render('index');
 }
