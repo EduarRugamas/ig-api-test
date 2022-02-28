@@ -11,10 +11,9 @@ const getInformationMedia = async (req, res) => {
     console.log('token obtenido: ' + token);
 
     try {
-        await axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + token)
-            .then(response => {res.json(response.data);})
-            .catch(error => {res.json(error);})
-
+        const result = await axios.get('https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=' + token)
+        console.log(result.data);
+        res.json(result.data);
     }catch (e) {
         res.json(e.message);
     }
