@@ -23,11 +23,19 @@ const getInformationMedia = async (req, res) => {
 const getInformatioUser = async (req, res) => {
     const token = localStorage.getItem('access_token');
 
-        await axios.get('https://graph.instagram.com/me?fields=account_type,id,username,media_count&access_token=' + token).then(response => {}).catch(error => {})
+        await axios.get('https://graph.instagram.com/me?fields=account_type,id,username,media_count&access_token=' + token)
+            .then(response => {
+                console.log("User information");
+                console.log(response.data);
+                res.json(response.data);
+        }).catch(error => {
+
+        });
 
 };
 
 
 module.exports = {
-    getInformationMedia
+    getInformationMedia,
+    getInformatioUser
 }
